@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import {
   Area,
   AreaChart,
@@ -12,9 +13,21 @@ import {
 } from "recharts";
 
 export default function Home() {
-  const data = [
+
+  interface DataItem {
+    name: string;
+    percentile5?: number;
+    percentile95?: number;
+    percentile50?: number;
+    percentile75?: number;
+    percentile25?: number;
+  }
+  const subtractIfDefined = (a: number | undefined, b: number | undefined): number | undefined => {
+    return (a !== undefined && b !== undefined) ? a - b : undefined;
+  };
+  const data: DataItem[] = [
     {
-      name: "page 1",
+      name: "12am",
       percentile5: 91.175,
       percentile95: 132.5666666666667,
       percentile50: 106.16666666666667,
@@ -22,7 +35,7 @@ export default function Home() {
       percentile25: 100.54166666666667,
     },
     {
-      name: "page 2",
+      name: "3am",
       percentile5: 86.72500000000001,
       percentile95: 124.68333333333332,
       percentile50: 107.16666666666667,
@@ -30,7 +43,7 @@ export default function Home() {
       percentile25: 102.33333333333333,
     },
     {
-      name: "page 3",
+      name: "6am",
       percentile5: 96.60000000000001,
       percentile95: 124.7,
       percentile50: 109.25,
@@ -38,7 +51,7 @@ export default function Home() {
       percentile25: 104.875,
     },
     {
-      name: "page 4",
+      name: "9am",
       percentile5: 95.51666666666667,
       percentile95: 124.01666666666665,
       percentile50: 112,
@@ -46,7 +59,7 @@ export default function Home() {
       percentile25: 106.83333333333333,
     },
     {
-      name: "page 5",
+      name: "12pm",
       percentile5: 92.26666666666667,
       percentile95: 125.7,
       percentile50: 112.41666666666667,
@@ -54,7 +67,7 @@ export default function Home() {
       percentile25: 107.83333333333333,
     },
     {
-      name: "page 6",
+      name: "3pm",
       percentile5: 97.90833333333335,
       percentile95: 125.59166666666665,
       percentile50: 110.5,
@@ -62,37 +75,37 @@ export default function Home() {
       percentile25: 107.5,
     },
     {
-      name: "page 7",
-      percentile5: 98.5,
-      percentile95: 126.925,
-      percentile50: 109.83333333333333,
-      percentile75: 119.625,
-      percentile25: 105.66666666666667,
+      name: "6pm",
+      // percentile5: 98.5,
+      // percentile95: 126.925,
+      // percentile50: 109.83333333333333,
+      // percentile75: 119.625,
+      // percentile25: 105.66666666666667,
     },
     {
-      name: "page 8",
-      // percentile5: 98.48333333333333,
-      // percentile95: 128.70000000000002,
-      // percentile50: 109.41666666666667,
-      // percentile75: 119.45833333333333,
-      // percentile25: 105.5,
+      name: "9pm",
+      percentile5: 98.48333333333333,
+      percentile95: 128.70000000000002,
+      percentile50: 109.41666666666667,
+      percentile75: 119.45833333333333,
+      percentile25: 105.5,
     },
     {
-      name: "page 9",
+      name: "12pm",
       percentile5: 97.10000000000001,
       percentile95: 130.42499999999998,
       percentile50: 109.5,
       percentile75: 118.08333333333333,
       percentile25: 103.83333333333333,
     },
-    {
-      name: "page 10",
-      percentile5: 94.64999999999999,
-      percentile95: 130.75833333333333,
-      percentile50: 105.75,
-      percentile75: 116.5,
-      percentile25: 100.5,
-    },
+    // {
+    //   name: "page 10",
+    //   percentile5: 94.64999999999999,
+    //   percentile95: 130.75833333333333,
+    //   percentile50: 105.75,
+    //   percentile75: 116.5,
+    //   percentile25: 100.5,
+    // },
     // {
     //   name: "page 11",
     //   percentile5: 88.575,
@@ -222,56 +235,67 @@ export default function Home() {
     //   percentile25: 102.33333333333333,
     // },
   ];
+  const Newdata: DataItem[] = data.map(item => ({
+    name: item.name,
+    percentile5: item.percentile5,
+    percentile95: subtractIfDefined(item.percentile95, item.percentile75),
+    percentile50: item.percentile50,
+    percentile75: subtractIfDefined(item.percentile75, item.percentile25),
+    percentile25: subtractIfDefined(item.percentile25, item.percentile5),
+  }));
+
   return (
     <div className="flex justify-center items-center h-screen">
       <ResponsiveContainer width="100%" height={200}>
         <ComposedChart
           width={500}
           height={200}
-          data={data}
+          data={Newdata}
           margin={{
             top: 10,
             right: 30,
-            left: 0,
+            left: 30,
             bottom: 0,
           }}
+          style={{backgroundColor: "green"}}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis />
+          <XAxis dataKey="name" style={{fontSize:10}}/>
+          <YAxis unit="mg/dL" style={{fontSize:10}}/>
           {/* <Tooltip /> */}
           <Area
             type="monotone"
             stackId="1"
             dataKey="percentile5"
-            stroke="#8884d8"
+            stroke="#bfc3c5"
             fill="#ffffff"
           />
           <Area
             type="monotone"
             dataKey="percentile25"
             stackId="1"
-            stroke="#82ca9d"
-            fill="#82ca9d"
+            stroke="#e0e5ec"
+            fill="#e0e5ec"
           />
           <Area
             type="monotone"
             dataKey="percentile75"
             stackId="1"
-            stroke="#ffc658"
-            fill="#ffc658"
+            stroke="#a6b6d3"
+            fill="#a6b6d3"
           />
           <Area
             type="monotone"
             dataKey="percentile95"
             stackId="1"
-            stroke="#ffc658"
-            fill="#ffc658"
+            strokeDasharray="6 6"
+            stroke="#bfc3c5"
+            fill="#e0e5ec"
           />
           <Line
             type="monotone"
             dataKey="percentile50"
-            stroke="#000000"
+            stroke="#2e5481"
             dot={false}
           />
         </ComposedChart>
