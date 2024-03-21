@@ -3,6 +3,7 @@ import {
   Area,
   CartesianGrid,
   ComposedChart,
+  Label,
   Line,
   ResponsiveContainer,
   XAxis,
@@ -20,6 +21,7 @@ export default function Home() {
     percentile25?: number;
     percentileMin?: number;
     percentileMax?: number;
+    percentileRange?: number;
   }
   const subtractIfDefined = (a: number | undefined, b: number | undefined): number | undefined => {
     return (a !== undefined && b !== undefined) ? a - b : undefined;
@@ -34,6 +36,7 @@ export default function Home() {
     percentile25: subtractIfDefined(item.percentile25, item.percentile5),
     percentileMin: 70,
     percentileMax: 180,
+    percentileRange: item.percentile95,
   }));
 
   return (
@@ -59,8 +62,18 @@ export default function Home() {
             domain={['dataMin', 'dataMin']}
             style={{ fontSize: 12, fontWeight: "bold" }}
           />
-          <YAxis unit="mg/dL" style={{ fontSize: 15, fontWeight: "bold" }} />
+          <YAxis yAxisId="y1" unit="mg/dL" style={{ fontSize: 11, fontWeight: "bold" }} />
+          <YAxis yAxisId="y2" ticks={[70, 180]} style={{ fontSize: 13, fontWeight: "bold" }} />
+          <Line
+            yAxisId="y2"
+            type="monotone"
+            dataKey="percentileRange"
+            stroke="#ffffff"
+            dot={false}
+            strokeWidth={2}
+          />
           <Area
+            yAxisId="y1"
             type="monotone"
             stackId="1"
             dataKey="percentile5"
@@ -68,6 +81,7 @@ export default function Home() {
             fill="#ffffff"
           />
           <Area
+            yAxisId="y1"
             type="monotone"
             dataKey="percentile25"
             stackId="1"
@@ -75,6 +89,7 @@ export default function Home() {
             fill="#e0e5ec"
           />
           <Area
+            yAxisId="y1"
             type="monotone"
             dataKey="percentile75"
             stackId="1"
@@ -82,6 +97,7 @@ export default function Home() {
             fill="#a6b6d3"
           />
           <Area
+            yAxisId="y1"
             type="monotone"
             dataKey="percentile95"
             stackId="1"
@@ -90,6 +106,7 @@ export default function Home() {
             fill="#e0e5ec"
           />
           <Line
+            yAxisId="y1"
             type="monotone"
             dataKey="percentile50"
             stroke="#2e5481"
@@ -97,13 +114,15 @@ export default function Home() {
             strokeWidth={2}
           />
           <Line
+            yAxisId="y1"
             type="monotone"
             stroke="#65a467"
             dataKey="percentileMax"
             dot={false}
             strokeWidth={3}
-          />
+          ><Label position="left">djdjdj</Label></Line>
           <Line
+            yAxisId="y1"
             type="monotone"
             dataKey="percentileMin"
             stroke="#65a467"
