@@ -144,11 +144,7 @@
                 "percentile25": 114.16666666666667
             },
             {
-                "percentile5": 87.95,
-                "percentile95": 144.0583333333333,
-                "percentile50": 114.5,
-                "percentile75": 121.41666666666667,
-                "percentile25": 107.70833333333333
+
             },
             {
                 "percentile5": 77.175,
@@ -165,11 +161,7 @@
                 "percentile25": 92.04166666666667
             },
             {
-                "percentile5": 75.45,
-                "percentile95": 126.76666666666665,
-                "percentile50": 99.83333333333333,
-                "percentile75": 108,
-                "percentile25": 89.375
+
             },
             {
                 "percentile5": 75.675,
