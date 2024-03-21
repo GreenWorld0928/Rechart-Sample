@@ -26,7 +26,7 @@ export default function Home() {
   };
   const data: DataItem[] = inputData.agpProfileGraph.values;
   const Newdata: DataItem[] = data.map((item, idx) => ({
-    time: idx * 25 / (data.length),
+    time: idx * 24 / (data.length - 1),
     percentile5: item.percentile5,
     percentile95: subtractIfDefined(item.percentile95, item.percentile75),
     percentile50: item.percentile50,
@@ -55,7 +55,7 @@ export default function Home() {
             dataKey="time"
             type="number"
             ticks={[0, 3, 6, 9, 12, 15, 18, 21, 24]}
-            tickFormatter={(time) => (time === 0 || time === 24) ? "12am" : (time <= 12 ? time + "am" : time - 12 + "pm")}
+            tickFormatter={(time) => (time === 0 || time === 24) ? "12am" : (time === 12 ? "12pm" : time < 12 ? time + "am" : time - 12 + "pm")}
             domain={['dataMin', 'dataMin']}
             style={{ fontSize: 12, fontWeight: "bold" }}
           />
